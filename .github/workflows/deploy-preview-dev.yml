@@ -1,0 +1,13 @@
+name: Deploy Preview on Push to Dev
+
+on:
+  push:
+    branches:
+      - dev  # Runs only when pushing to the dev branch
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Preview Deployment
+        run: curl -X POST "${{ secrets.RENDER_PREVIEW_WEBHOOK }}"

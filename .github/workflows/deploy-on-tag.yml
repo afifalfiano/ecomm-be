@@ -1,0 +1,13 @@
+name: Deploy on Tag
+
+on:
+  push:
+    tags:
+      - "v*"  # Trigger when a tag like v1.0.0 is pushed
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Render Webhook
+        run: curl -X POST "${{ secrets.RENDER_WEBHOOK_URL }}"
