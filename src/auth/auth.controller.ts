@@ -1,35 +1,42 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthPayloadDto } from './dto/auth.dto';
-import { AuthService } from './auth.service';
+import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { LocalGuard } from './guard/local.guard';
-import { Request } from 'express';
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entity/user.entity';
 import { JwtAuthGuard } from './guard/jwt.guard';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post('login')
   @UseGuards(LocalGuard)
-  login(@Body() authPayload: AuthPayloadDto) {
-    const user = this.authService.validateUser(authPayload);
-    return user;
+  async login(@Request() req: any): Promise<any> {
+    return this.authService.login(req.user);
   }
 
-  @Get('status')
   @UseGuards(JwtAuthGuard)
-  status(@Req() req: Request) {
-    console.log('status API');
-    console.log('user', req.user);
+  @Post('logout')
+  async logout(@Request() req) {
+    console.log(req)
+    const token = req.headers.authorization?.split(' ')[1]; // Extract JWT from Bearer token
+    if (token) {
+      this.authService.logout(token);
+    }
+    return { message: 'Logged out successfully' };
+  }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
     return req.user;
+  }
 
+  @Post('register')
+  async register(@Body() registerUserDto: User): Promise<any> {
+    return await this.userService.register(registerUserDto);
   }
 }

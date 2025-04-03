@@ -1,32 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthPayloadDto } from './dto/auth.dto';
+import * as bcrypt from 'bcrypt';
+import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-
-const fakeUser = [
-  {
-    id: 1,
-    username: 'afif',
-    password: 'afif',
-  },
-  {
-    id: 2,
-    username: 'ano',
-    password: 'ano',
-  },
-];
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
-  validateUser({ username, password }: AuthPayloadDto) {
-    const findUser = fakeUser.find((user) => user.username === username);
-    if (!findUser) {
-      return null;
-    }
+  private blacklistedTokens = new Set<string>();
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-    if (findUser.password === password) {
-      const {password, ...user } = findUser;
-      return this.jwtService.sign(user);
+  async validateUser({ email, password }: AuthPayloadDto): Promise<any> {
+    const user = await this.userService.findByEmail(email);
+    const compareBcrypt = user && (await bcrypt.compare(password, user.password))
+    if (compareBcrypt) {
+      const { password, ...result } = user;
+      return result;
     }
+    throw new UnauthorizedException();
+  }
+
+  async login(user: any) {
+    const payload = { name: user.name, email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
+  logout(token: string) {
+    this.blacklistedTokens.add(token); // Add token to blacklist
+  }
+
+  isTokenBlacklisted(token: string): boolean {
+    return this.blacklistedTokens.has(token);
   }
 }
