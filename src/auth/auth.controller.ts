@@ -21,7 +21,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req) {
-    console.log(req)
     const token = req.headers.authorization?.split(' ')[1]; // Extract JWT from Bearer token
     if (token) {
       this.authService.logout(token);
