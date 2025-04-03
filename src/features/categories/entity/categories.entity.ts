@@ -1,7 +1,9 @@
+import { Products } from 'src/features/products/entity/products.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -15,4 +17,7 @@ export class Categories {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @OneToMany(() => Products, (product) => product.category)
+  products: Products[];
 }
