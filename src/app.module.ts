@@ -7,6 +7,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entity/user.entity';
+import { CategoriesModule } from './categories/categories.module';
+import { Categories } from './categories/entity/categories.entity';
 
 @Module({
   imports: [
@@ -20,8 +22,8 @@ import { User } from './users/entity/user.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User],
-      synchronize: false,
+      entities: [User, Categories],
+      synchronize: true,
       migrationsTableName: 'migrations',
     }),
     ThrottlerModule.forRoot({
@@ -34,6 +36,7 @@ import { User } from './users/entity/user.entity';
     }),
     AuthModule,
     UsersModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
