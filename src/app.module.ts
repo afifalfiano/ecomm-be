@@ -12,6 +12,10 @@ import { Categories } from './features/categories/entity/categories.entity';
 import { ProductsModule } from './features/products/products.module';
 import { Products } from './features/products/entity/products.entity';
 import { LoggerModule } from 'nestjs-pino';
+import { OrderItems } from './features/order-items/entity/order-items.entity';
+import { Orders } from './features/orders/entity/orders.entity';
+import { OrdersModule } from './features/orders/orders.module';
+import { OrderItemsModule } from './features/order-items/order-items.module';
 
 @Module({
   imports: [
@@ -22,6 +26,7 @@ import { LoggerModule } from 'nestjs-pino';
           options: {
             colorize: true,
             translateTime: 'yyyy-mm-dd HH:MM:ss',
+            ignore: 'pid,hostname',
           },
         },
       },
@@ -36,7 +41,7 @@ import { LoggerModule } from 'nestjs-pino';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Categories, Products],
+      entities: [User, Categories, Products, OrderItems, Orders],
       synchronize: true,
       autoLoadEntities: true,
       migrationsTableName: 'migrations',
@@ -53,6 +58,8 @@ import { LoggerModule } from 'nestjs-pino';
     UsersModule,
     CategoriesModule,
     ProductsModule,
+    OrderItemsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

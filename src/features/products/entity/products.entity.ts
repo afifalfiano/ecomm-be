@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Categories } from 'src/features/categories/entity/categories.entity';
+import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -52,4 +54,9 @@ export class Products {
     onDelete: 'CASCADE',
   })
   category: Categories;
+
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.product_id, {
+    onDelete: 'CASCADE',
+  })
+  orderItems: OrderItems;
 }
