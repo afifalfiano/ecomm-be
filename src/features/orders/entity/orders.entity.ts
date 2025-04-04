@@ -1,5 +1,6 @@
 import { OrderStatus } from 'src/common/enum/status-order';
 import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
+import { Payments } from 'src/features/payments/entity/payments';
 import { User } from 'src/features/users/entity/user.entity';
 import {
   Column,
@@ -8,6 +9,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -46,4 +48,9 @@ export class Orders {
     eager: true, // auto fetch detail product
   })
   orderItems: OrderItems[];
+
+  @OneToOne(() => Payments, (payment) => payment.order_id, {
+    cascade: true,
+  })
+  payments_id: number;
 }

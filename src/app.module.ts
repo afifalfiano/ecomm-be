@@ -16,6 +16,8 @@ import { OrderItems } from './features/order-items/entity/order-items.entity';
 import { Orders } from './features/orders/entity/orders.entity';
 import { OrdersModule } from './features/orders/orders.module';
 import { OrderItemsModule } from './features/order-items/order-items.module';
+import { Payments } from './features/payments/entity/payments';
+import { PaymentsModule } from './features/payments/payments.module';
 
 @Module({
   imports: [
@@ -41,7 +43,7 @@ import { OrderItemsModule } from './features/order-items/order-items.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Categories, Products, OrderItems, Orders],
+      entities: [User, Categories, Products, OrderItems, Orders, Payments],
       synchronize: true,
       autoLoadEntities: true,
       migrationsTableName: 'migrations',
@@ -60,6 +62,7 @@ import { OrderItemsModule } from './features/order-items/order-items.module';
     ProductsModule,
     OrderItemsModule,
     OrdersModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

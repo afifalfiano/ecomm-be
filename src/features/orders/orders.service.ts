@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, IsNull, Repository } from 'typeorm';
-import { CreateOrderDto } from './dto/create-order';
+import { DataSource, IsNull, Repository } from 'typeorm';
 import { ResponseAPI } from 'src/common/responses/response';
 import { Orders } from './entity/orders.entity';
-import { Products } from '../products/entity/products.entity';
 import { OrderItems } from '../order-items/entity/order-items.entity';
 import { OrderStatus } from 'src/common/enum/status-order';
 import { AuthUserDto } from 'src/core/auth/dto/auth.dto';
@@ -64,8 +62,11 @@ export class OrdersService {
         relations: ['orderItems', 'orderItems.product_id'],
       });
       return data;
-    } catch (error) {
-      throw new Error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('An unknown error occurred');
     }
   }
 }
