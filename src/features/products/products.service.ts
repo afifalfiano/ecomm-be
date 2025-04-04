@@ -90,7 +90,7 @@ export class ProductsService {
         throw new ConflictException('Product not found');
       }
 
-      const data = await this.productsRepository.delete(id);
+      const data = await this.productsRepository.softDelete(id);
       return {
         success: true,
         message: 'Success delete product',

@@ -89,7 +89,7 @@ export class CategoriesService {
         throw new ConflictException('Category not found');
       }
 
-      const data = await this.categoriesRepository.delete(id);
+      const data = await this.categoriesRepository.softDelete(id);
       return {
         success: true,
         message: 'Success delete category',
