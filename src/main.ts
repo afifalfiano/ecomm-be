@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './core/interceptors/response/response.interceptor';
 import { GlobalExceptionFilter } from './core/exception/exception.filter';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true
+  });
 
   const config = new DocumentBuilder()
     .setTitle('E-commerce API')
@@ -19,6 +22,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new GlobalExceptionFilter());
+  app.useLogger(app.get(Logger));
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

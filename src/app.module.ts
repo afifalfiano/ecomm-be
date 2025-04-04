@@ -11,9 +11,21 @@ import { CategoriesModule } from './features/categories/categories.module';
 import { Categories } from './features/categories/entity/categories.entity';
 import { ProductsModule } from './features/products/products.module';
 import { Products } from './features/products/entity/products.entity';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+            translateTime: 'yyyy-mm-dd HH:MM:ss',
+          },
+        },
+      },
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
