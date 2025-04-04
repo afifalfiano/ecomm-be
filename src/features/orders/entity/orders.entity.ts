@@ -49,8 +49,8 @@ export class Orders {
   })
   orderItems: OrderItems[];
 
-  @OneToOne(() => Payments, (payment) => payment.order_id, {
+  @OneToOne(() => Payments, (payment) => payment.orders, {
     cascade: true,
   })
-  payments_id: number;
+  payments: Payments;
 }

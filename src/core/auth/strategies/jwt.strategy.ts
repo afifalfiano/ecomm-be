@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('No authorization header');
     }
 
-    const token = authHeader.split(' ')[1]; // Extract token
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader; // Extract token
 
     if (!token) {
       throw new UnauthorizedException('Invalid token format');

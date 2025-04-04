@@ -21,6 +21,7 @@ export class OrdersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get all orders' })
   @ApiResponse({
     status: 200,
