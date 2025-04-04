@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -22,5 +23,11 @@ export class PaymentsController {
     @CurrentUser() user: AuthUserDto,
   ): Promise<ResponseAPI<any>> {
     return this.paymentsService.createPaymentForOrder(id, user);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async list(): Promise<ResponseAPI<any>> {
+    return this.paymentsService.list();
   }
 }

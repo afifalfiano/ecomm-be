@@ -12,7 +12,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentsMethod, PaymentsStatus } from '../enum/status-payments';
-import { Optional } from '@nestjs/common';
 
 @Entity()
 export class Payments {
@@ -28,6 +27,9 @@ export class Payments {
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt: Date;
 
+  @Column({ type: 'text' })
+  url_payment?: string;
+
   @Column({
     type: 'enum',
     enum: PaymentsStatus,
@@ -42,6 +44,7 @@ export class Payments {
   })
   payment_method: PaymentsMethod;
 
-  @OneToOne(() => Orders, (order) => order.payments_id)
-  order_id: number;
+  @OneToOne(() => Orders, (order) => order.payments)
+  @JoinColumn()
+  orders: Orders;
 }
