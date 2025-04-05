@@ -1,3 +1,5 @@
+import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
+import { Orders } from 'src/features/orders/entity/orders.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +7,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -29,4 +32,16 @@ export class User {
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
   deletedAt: Date;
+
+  @OneToMany(() => Orders, (orders) => orders.id, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  orders: Orders;
+
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.id, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  orderItems: OrderItems;
 }

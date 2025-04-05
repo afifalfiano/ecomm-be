@@ -6,6 +6,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Products } from '../products/entity/products.entity';
 import { ResponseAPI } from 'src/common/responses/response';
 import { AuthUserDto } from 'src/core/auth/dto/auth.dto';
+import { User } from '../users/entity/user.entity';
 
 @Injectable()
 export class OrderItemsService {
@@ -17,7 +18,7 @@ export class OrderItemsService {
 
   async add(
     addOrderItems: CreateOrderItemDto,
-    user: AuthUserDto,
+    userAuth: AuthUserDto,
   ): Promise<ResponseAPI<OrderItems>> {
     const { product_id, quantity } = addOrderItems;
     return await this.dataSource.transaction(async (manager) => {
@@ -25,14 +26,22 @@ export class OrderItemsService {
         where: { id: product_id.toString() },
       });
 
+      const user = await manager.findOne(User, {
+        where: { id: userAuth.sub },
+      });
+
       if (!products) {
         throw new Error(`Product ID ${product_id} not found`);
       }
 
       const subtotal = Number(products.price) * quantity;
+      if (!user) {
+        throw new Error(`User ID ${userAuth.sub} not found`);
+      }
+
       const orderItem = manager.create(OrderItems, {
-        user: user.sub,
-        product_id,
+        user: user,
+        products: products,
         subtotal,
         quantity,
       });

@@ -16,7 +16,9 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a new order with items' })
   @ApiResponse({ status: 201, description: 'Order created successfully' })
-  async create(@CurrentUser() user: AuthUserDto): Promise<ResponseAPI<Orders>> {
+  async create(
+    @CurrentUser() user: AuthUserDto,
+  ): Promise<ResponseAPI<Orders | null>> {
     return this.orderService.createOrder(user);
   }
 

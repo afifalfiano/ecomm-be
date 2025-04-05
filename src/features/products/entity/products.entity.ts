@@ -55,7 +55,7 @@ export class Products {
   })
   category: Categories;
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.product_id, {
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.products, {
     onDelete: 'CASCADE',
   })
   orderItems: OrderItems;

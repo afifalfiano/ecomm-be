@@ -1,6 +1,6 @@
-import { Optional } from '@nestjs/common';
 import { Orders } from 'src/features/orders/entity/orders.entity';
 import { Products } from 'src/features/products/entity/products.entity';
+import { User } from 'src/features/users/entity/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -14,15 +14,21 @@ export class OrderItems {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   subtotal: number;
 
-  @ManyToOne(() => Products, (product) => product.id, {
+  @ManyToOne(() => Products, (products) => products.id, {
     onDelete: 'CASCADE',
     eager: true,
   })
-  product_id: number;
+  products: Products;
 
-  @ManyToOne(() => Orders, (order) => order.id, {
-    onDelete: 'CASCADE',
+  @ManyToOne(() => Orders, (orders) => orders.id, {
+    onDelete: 'SET NULL',
+    eager: true,
   })
-  @Optional()
-  order_id?: number;
+  orders: Orders;
+
+  @ManyToOne(() => User, (user) => user.id, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  user: User;
 }

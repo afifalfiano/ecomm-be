@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, IsNull, Repository } from 'typeorm';
@@ -16,11 +17,11 @@ export class OrdersService {
     @InjectRepository(Orders) private ordersRepository: Repository<Orders>,
   ) {}
 
-  async createOrder(user: AuthUserDto): Promise<ResponseAPI<Orders>> {
+  async createOrder(user: AuthUserDto): Promise<ResponseAPI<Orders | null>> {
     return await this.dataSource.transaction(async (manager) => {
       // 1. Get All Order Items that don't have order_id
       const orderItems = await manager.find(OrderItems, {
-        where: { order_id: IsNull() },
+        where: { orders: IsNull() },
       });
 
       const totalPrice = orderItems.reduce((sum, item) => {
@@ -34,7 +35,7 @@ export class OrdersService {
 
       // 2. Create order
       const order = manager.create(Orders, {
-        user_id: user.sub,
+        user: { id: user.sub },
         total_price: totalPrice,
         status: OrderStatus.PENDING,
       });
@@ -44,13 +45,13 @@ export class OrdersService {
 
       // 3. Update order_id on order items
       for (const item of orderItems) {
-        item.order_id = savedOrder.id;
-        await manager.save(OrderItems, item);
+        item.orders = savedOrder;
+        await manager.update(OrderItems, item.id, item);
       }
 
       return {
         message: 'Order created successfully',
-        data: order,
+        data: savedOrder,
         success: true,
       };
     });

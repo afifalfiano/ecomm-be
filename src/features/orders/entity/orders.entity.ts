@@ -41,11 +41,10 @@ export class Orders {
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
   })
-  user_id: number;
+  user: User;
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.order_id, {
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.orders, {
     onDelete: 'CASCADE',
-    eager: true, // auto fetch detail product
   })
   orderItems: OrderItems[];
 

@@ -5,8 +5,6 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -44,7 +42,7 @@ export class Payments {
   })
   payment_method: PaymentsMethod;
 
-  @OneToOne(() => Orders, (order) => order.payments)
+  @OneToOne(() => Orders, (order) => order.payments, { eager: true })
   @JoinColumn()
   orders: Orders;
 }

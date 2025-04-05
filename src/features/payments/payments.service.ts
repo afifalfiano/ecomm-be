@@ -7,6 +7,10 @@ import { Repository } from 'typeorm';
 import { MidtransService } from './midtrans/midtrans.service';
 import { Payments } from './entity/payments';
 import { PaymentsMethod, PaymentsStatus } from './enum/status-payments';
+import {
+  CreateTransactionMidtrans,
+  ItemDetailsMidtrans,
+} from './interfaces/midtrans.interface';
 
 interface SnapResponse {
   redirect_url: string;
@@ -27,24 +31,41 @@ export class PaymentsService {
   ): Promise<ResponseAPI<Payments | null>> {
     const order = await this.ordersRepository.findOne({
       where: { id: orderId },
+      relations: ['user', 'orderItems', 'payments'],
     });
     if (!order) throw new NotFoundException('Order not found');
-    const snapResponse = (await this.midtransService.createTransaction({
+    const items: ItemDetailsMidtrans[] = order.orderItems.map((item) => {
+      return {
+        item_id: item.products.id,
+        price: item.products.price,
+        quantity: item.quantity,
+        name: item.products.name,
+      };
+    });
+
+    const body: CreateTransactionMidtrans = {
       id: order.id,
       total_price: Number(order.total_price),
       email: user.email,
       fullname: user.name,
-    })) as SnapResponse;
+      item_details: items,
+    };
+
+    console.log(body);
+
+    const snapResponse = (await this.midtransService.createTransaction(
+      body,
+    )) as SnapResponse;
+
 
     const payment = this.paymentsRepository.create({
-      orders: { id: order.id },
+      orders: order,
       payment_method: PaymentsMethod.BANK_TRANSFER,
       status: PaymentsStatus.PENDING,
-      url_payment: snapResponse.redirect_url,
+      url_payment: snapResponse.redirect_url
     });
 
     const savePayment = await this.paymentsRepository.save(payment);
-    console.log(savePayment);
 
     return {
       message: 'Generate link payment successfully',
