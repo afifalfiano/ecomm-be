@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PaymentsMethod, PaymentsStatus } from '../enum/status-payments';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Payments {
@@ -23,6 +24,7 @@ export class Payments {
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
   deletedAt: Date;
 
   @Column({ type: 'text' })

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
 import { Orders } from 'src/features/orders/entity/orders.entity';
 import {
@@ -31,6 +32,7 @@ export class User {
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
   deletedAt: Date;
 
   @OneToMany(() => Orders, (orders) => orders.id, {

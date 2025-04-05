@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'; // Ensure this import is correct and the package is installed
 import { Products } from 'src/features/products/entity/products.entity';
 import {
   Column,
@@ -24,6 +25,7 @@ export class Categories {
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
   deletedAt: Date;
 
   @OneToMany(() => Products, (product) => product.category)

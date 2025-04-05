@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { Categories } from 'src/features/categories/entity/categories.entity';
 import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
 import {
@@ -48,6 +49,7 @@ export class Products {
 
   @ApiProperty()
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
   deletedAt: Date;
 
   @ManyToOne(() => Categories, (category) => category.products, {
