@@ -37,16 +37,22 @@ import { PaymentsModule } from './features/payments/payments.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '3306', 10),
+      port: parseInt(process.env.DB_PORT || '5432', 10),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [User, Categories, Products, OrderItems, Orders, Payments],
       synchronize: true,
       autoLoadEntities: true,
-      migrationsTableName: 'migrations',
+      logging: true,
+      logger: 'advanced-console',
+      // extra: {
+      //   ssl: {
+      //     rejectUnauthorized: false,
+      //   },
+      // },
     }),
     ThrottlerModule.forRoot({
       throttlers: [

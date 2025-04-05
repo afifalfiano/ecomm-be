@@ -60,7 +60,7 @@ export class OrdersService {
   async list() {
     try {
       const data = await this.ordersRepository.find({
-        relations: ['orderItems', 'orderItems.product_id'],
+        relations: ['orderItems'],
       });
       return data;
     } catch (error: unknown) {
