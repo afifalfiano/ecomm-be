@@ -62,7 +62,7 @@ export class ProductsService {
       }
 
       const updateProduct = await this.productsRepository.update(id, data);
-      console.log(updateProduct, 'upda')
+
       if (updateProduct.affected === 0) {
         throw new HttpException(
           'Failed to update product',

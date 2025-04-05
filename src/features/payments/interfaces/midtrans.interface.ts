@@ -12,3 +12,11 @@ export interface CreateTransactionMidtrans {
   fullname: string;
   item_details: ItemDetailsMidtrans[];
 }
+
+
+export interface MidtransSignatureBody {
+  order_id: string;
+  status_code: string;
+  gross_amount: string;
+  signature_key: string;
+}

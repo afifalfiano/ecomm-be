@@ -58,9 +58,7 @@ export class OrderItemsService {
 
   async list() {
     try {
-      const data = await this.orderItemsRepository.find({
-        relations: ['order_id'],
-      });
+      const data = await this.orderItemsRepository.find();
       return data;
     } catch (error) {
       throw new Error(error.message);
