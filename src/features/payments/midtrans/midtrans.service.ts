@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable } from '@nestjs/common';
 import * as midtransClient from 'midtrans-client';
-import { CreateTransactionMidtrans, ItemDetailsMidtrans } from '../interfaces/midtrans.interface';
+import { CreateTransactionMidtrans } from '../interfaces/midtrans.interface';
 
 @Injectable()
 export class MidtransService {

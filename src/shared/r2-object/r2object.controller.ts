@@ -1,8 +1,4 @@
-import {
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { R2ObjectService } from './r2-object.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuid } from 'uuid';
@@ -16,7 +12,7 @@ export class R2ObjectController {
   constructor(private r2ClientService: R2ObjectService) {}
 
   @Post()
-//   @UseGuards(JwtAuthGuard)
+  //   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,

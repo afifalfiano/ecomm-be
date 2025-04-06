@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
-    super()
+    super();
   }
   canActivate(
     context: ExecutionContext,

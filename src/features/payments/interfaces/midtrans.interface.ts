@@ -13,7 +13,6 @@ export interface CreateTransactionMidtrans {
   item_details: ItemDetailsMidtrans[];
 }
 
-
 export interface MidtransSignatureBody {
   order_id: string;
   status_code: string;
