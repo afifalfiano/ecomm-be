@@ -49,8 +49,8 @@ import { ThrottlerCustomGuard } from './core/auth/guard/throttle.guard';
       entities: [User, Categories, Products, OrderItems, Orders, Payments],
       synchronize: true,
       autoLoadEntities: true,
-      // logging: true,
-      // logger: 'advanced-console',
+      logging: true,
+      logger: 'advanced-console',
       // extra: {
       //   ssl: {
       //     rejectUnauthorized: false,

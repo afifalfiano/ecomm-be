@@ -5,12 +5,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './core/interceptors/response/response.interceptor';
 import { GlobalExceptionFilter } from './core/exception/exception.filter';
 import { Logger } from 'nestjs-pino';
-import { ClassSerializerInterceptor } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { doubleCsrf } from 'csrf-csrf';
 import * as cookieParser from 'cookie-parser';
 import { doubleCsrfOptions } from './config/csrfToken.config';
 import { NextFunction } from 'express';
 import { Request, Response } from 'express';
+import * as compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -58,6 +59,12 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useLogger(app.get(Logger));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.use(compression());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: false,
+    }),
+  );
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
