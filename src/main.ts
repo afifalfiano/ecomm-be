@@ -9,6 +9,8 @@ import { ClassSerializerInterceptor } from '@nestjs/common';
 import { doubleCsrf } from 'csrf-csrf';
 import * as cookieParser from 'cookie-parser';
 import { doubleCsrfOptions } from './config/csrfToken.config';
+import { NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -19,7 +21,27 @@ async function bootstrap() {
     doubleCsrfProtection, // This is the default CSRF protection middleware.
   } = doubleCsrf(doubleCsrfOptions);
   app.use(cookieParser());
-  app.use(doubleCsrfProtection);
+  // List of paths to exclude
+  const excludedPaths = [
+    '/v1/auth/login',
+    '/v1/auth/register',
+    '/v1/auth/logout',
+    '/v1/upload',
+    '/v1/payments/webhook/midtrans',
+  ];
+
+  const customCsrfProtection = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    if (excludedPaths.includes(req.path)) {
+      return next(); // ✅ skip CSRF
+    }
+
+    return doubleCsrfProtection(req, res, next); // ✅ apply CSRF
+  };
+  app.use(customCsrfProtection);
 
   const config = new DocumentBuilder()
     .setTitle('E-Comm API')

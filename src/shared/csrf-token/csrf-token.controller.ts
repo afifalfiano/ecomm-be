@@ -1,8 +1,9 @@
-import { Get, Post, Req, Res } from '@nestjs/common';
+import { Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { doubleCsrf } from 'csrf-csrf';
 import { doubleCsrfOptions } from 'src/config/csrfToken.config';
 import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
+import { JwtAuthGuard } from 'src/core/auth/guard/jwt.guard';
 
 @V1Controller('csrf-token')
 export class CsrfTokenController {
@@ -20,6 +21,7 @@ export class CsrfTokenController {
   }
 
   @Post('test')
+  @UseGuards(JwtAuthGuard)
   test(@Res() res: Response) {
     res.json({
       message: 'Test CSRF Success',
