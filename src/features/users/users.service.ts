@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/user.dto';
+import { ResponseAPI } from 'src/common/responses/response';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +17,7 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
-  async register(registerUserDto: CreateUserDto) {
+  async register(registerUserDto: CreateUserDto): Promise<ResponseAPI<any>> {
     const { name, email, password: plainPassword } = registerUserDto;
     const exist = await this.usersRepository.findOne({ where: { email } });
 
@@ -33,9 +34,12 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    const safeUser: Promise<Partial<CreateUserDto>> =
-      this.usersRepository.save(newUser);
-    delete (await safeUser).password;
-    return safeUser;
+    const user = await this.usersRepository.save(newUser);
+
+    return {
+      message: 'Success registry a new user',
+      success: true,
+      data: user,
+    };
   }
 }
