@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './core/interceptors/response/response.interceptor';
 import { GlobalExceptionFilter } from './core/exception/exception.filter';
 import { Logger } from 'nestjs-pino';
-import { ClassSerializerInterceptor, VersioningType } from '@nestjs/common';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

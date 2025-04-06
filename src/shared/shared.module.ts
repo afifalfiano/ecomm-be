@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { R2ObjectService } from './r2-object/r2-object.service';
 import { R2ObjectController } from './r2-object/r2object.controller';
 import { MulterModule } from '@nestjs/platform-express';
+import { PrometheusController } from './prometheus/prometheus.controller';
+import { PrometheusService } from './prometheus/prometheus.service';
 
 @Module({
-  providers: [R2ObjectService],
-  exports: [R2ObjectService],
+  providers: [R2ObjectService, PrometheusService],
+  exports: [R2ObjectService, PrometheusService],
   imports: [MulterModule.register()],
-  controllers: [R2ObjectController],
+  controllers: [R2ObjectController, PrometheusController],
 })
 export class SharedModule {}

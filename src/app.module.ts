@@ -19,6 +19,8 @@ import { OrderItemsModule } from './features/order-items/order-items.module';
 import { Payments } from './features/payments/entity/payments';
 import { PaymentsModule } from './features/payments/payments.module';
 import { SharedModule } from './shared/shared.module';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerCustomGuard } from './core/auth/guard/throttle.guard';
 
 @Module({
   imports: [
@@ -47,8 +49,8 @@ import { SharedModule } from './shared/shared.module';
       entities: [User, Categories, Products, OrderItems, Orders, Payments],
       synchronize: true,
       autoLoadEntities: true,
-      logging: true,
-      logger: 'advanced-console',
+      // logging: true,
+      // logger: 'advanced-console',
       // extra: {
       //   ssl: {
       //     rejectUnauthorized: false,
@@ -58,7 +60,7 @@ import { SharedModule } from './shared/shared.module';
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 60000, // max 10 request per 60s
+          ttl: 60, // max 10 request per 60s
           limit: 10,
         },
       ],
@@ -73,6 +75,12 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerCustomGuard,
+    },
+  ],
 })
 export class AppModule {}
