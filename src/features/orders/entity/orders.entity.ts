@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { OrderStatus } from 'src/common/enum/status-order';
 import { OrderItems } from 'src/features/order-items/entity/order-items.entity';
 import { Payments } from 'src/features/payments/entity/payments';
@@ -7,7 +8,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -37,6 +37,7 @@ export class Orders {
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp', nullable: true })
+  @Exclude()
   deletedAt: Date;
 
   @ManyToOne(() => User, (user) => user.id, {

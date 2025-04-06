@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ResponseInterceptor } from './core/interceptors/response/response.interceptor';
 import { GlobalExceptionFilter } from './core/exception/exception.filter';
 import { Logger } from 'nestjs-pino';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -11,18 +12,20 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('E-commerce API')
+    .setTitle('E-Comm API')
     .setDescription('API documentation for the e-commerce system')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    deepScanRoutes: true,
+  });
   SwaggerModule.setup('api/docs', app, document);
-
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useLogger(app.get(Logger));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -8,3 +8,11 @@ MIDTRANS_CLIENT=
 MIDTRANS_SERVER=
 MIDTRANS_MERCHANT_ID=
 ORDER_IDENTITY=
+
+R2_ACCESS_KEY_ID=your_access_key
+R2_SECRET_ACCESS_KEY=your_secret_key
+R2_BUCKET_NAME=your_bucket
+R2_ACCOUNT_ID=your_account_id
+R2_ACCOUNT_DEV=your_account_dev
+R2_REGION=auto
+R2_ENDPOINT=https://<your_account_id>.r2.cloudflarestorage.com

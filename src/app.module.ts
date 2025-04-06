@@ -18,6 +18,7 @@ import { OrdersModule } from './features/orders/orders.module';
 import { OrderItemsModule } from './features/order-items/order-items.module';
 import { Payments } from './features/payments/entity/payments';
 import { PaymentsModule } from './features/payments/payments.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { PaymentsModule } from './features/payments/payments.module';
     OrderItemsModule,
     OrdersModule,
     PaymentsModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

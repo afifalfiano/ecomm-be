@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
-  Body,
-  Controller,
   Get,
-  Headers,
-  HttpCode,
   Param,
   ParseIntPipe,
   Post,
@@ -17,8 +13,9 @@ import { AuthUserDto } from 'src/core/auth/dto/auth.dto';
 import { JwtAuthGuard } from 'src/core/auth/guard/jwt.guard';
 import { PaymentsService } from './payments.service';
 import { PinoLogger } from 'nestjs-pino';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
-@Controller('payments')
+@V1Controller('payments')
 export class PaymentsController {
   constructor(
     private readonly paymentsService: PaymentsService,

@@ -1,5 +1,4 @@
 import {
-  Controller,
   Delete,
   Get,
   Param,
@@ -21,9 +20,10 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { Products } from './entity/products.entity';
 import { ResponseAPI } from 'src/common/responses/response';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
 @ApiTags('Products')
-@Controller('products')
+@V1Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
 
