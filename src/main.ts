@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -5,11 +6,20 @@ import { ResponseInterceptor } from './core/interceptors/response/response.inter
 import { GlobalExceptionFilter } from './core/exception/exception.filter';
 import { Logger } from 'nestjs-pino';
 import { ClassSerializerInterceptor } from '@nestjs/common';
+import { doubleCsrf } from 'csrf-csrf';
+import * as cookieParser from 'cookie-parser';
+import { doubleCsrfOptions } from './config/csrfToken.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
+
+  const {
+    doubleCsrfProtection, // This is the default CSRF protection middleware.
+  } = doubleCsrf(doubleCsrfOptions);
+  app.use(cookieParser());
+  app.use(doubleCsrfProtection);
 
   const config = new DocumentBuilder()
     .setTitle('E-Comm API')
