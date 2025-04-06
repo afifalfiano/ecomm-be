@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OrderItemsService } from './order-items.service';
 import { ResponseAPI } from 'src/common/responses/response';
@@ -8,8 +8,9 @@ import { CreateOrderItemDto } from './dto/create-order-item';
 import { OrderItems } from './entity/order-items.entity';
 import { CurrentUser } from 'src/core/auth/decorator/user.decorator';
 import { AuthUserDto } from 'src/core/auth/dto/auth.dto';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
-@Controller('order-items')
+@V1Controller('order-items')
 @ApiTags('Order Items')
 export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) {}

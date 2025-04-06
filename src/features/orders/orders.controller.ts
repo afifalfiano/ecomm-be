@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Get, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Orders } from './entity/orders.entity';
 import { OrdersService } from './orders.service';
@@ -6,8 +6,9 @@ import { JwtAuthGuard } from 'src/core/auth/guard/jwt.guard';
 import { ResponseAPI } from 'src/common/responses/response';
 import { CurrentUser } from 'src/core/auth/decorator/user.decorator';
 import { AuthUserDto } from 'src/core/auth/dto/auth.dto';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
-@Controller('orders')
+@V1Controller('orders')
 @ApiTags('Orders')
 export class OrdersController {
   constructor(private readonly orderService: OrdersService) {}

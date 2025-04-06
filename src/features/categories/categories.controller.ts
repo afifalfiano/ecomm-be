@@ -11,8 +11,9 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { JwtAuthGuard } from 'src/core/auth/guard/jwt.guard';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
-@Controller('categories')
+@V1Controller('categories')
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 

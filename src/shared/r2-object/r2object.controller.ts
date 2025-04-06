@@ -1,8 +1,6 @@
 import {
-  Controller,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { R2ObjectService } from './r2-object.service';
@@ -11,9 +9,9 @@ import { v4 as uuid } from 'uuid';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { Express } from 'express';
 import { ResponseAPI } from 'src/common/responses/response';
-import { JwtAuthGuard } from 'src/core/auth/guard/jwt.guard';
+import { V1Controller } from 'src/core/auth/decorator/v1-controller.decorator';
 
-@Controller('upload')
+@V1Controller('upload')
 export class R2ObjectController {
   constructor(private r2ClientService: R2ObjectService) {}
 

@@ -21,8 +21,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthPayloadDto, AuthUserDto } from './dto/auth.dto';
+import { V1Controller } from './decorator/v1-controller.decorator';
 
-@Controller('auth')
+@V1Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
   constructor(
